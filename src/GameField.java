@@ -7,9 +7,11 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class GameField extends JPanel implements ActionListener {
-    private final int SIZE = 320;     // Размер поля (в пикселях)
-    private final int DOT_SIZE = 16;  // Размер 1 части змейки и 1 яблока (в пикселях)
-    private final int ALL_DOTS = 400; // Сколько таких частей может поместиться в поле
+    // Размеры
+    private final int DOT_SIZE = 16;  // Размер клетки в пикселях
+    private final int GRID_SIZE = 20; // Ширина поля в клетках
+    private final int FIELD_SIZE = GRID_SIZE * DOT_SIZE; // Ширина поля в пикселях
+    private final int ALL_DOTS = GRID_SIZE * GRID_SIZE;  // Количество клеток в поле
     // Изображения точки и яблока
     private Image dot;
     private Image apple;
@@ -32,6 +34,7 @@ public class GameField extends JPanel implements ActionListener {
     // Конструктор по умолчанию
     public GameField() {
         setBackground(Color.black); // Цвет игрового поля
+        setPreferredSize(new Dimension(FIELD_SIZE, FIELD_SIZE));
         loadImages();               // Загрузка изображений
         initGame();                 // Инициализация игры
         addKeyListener(new FieldKeyListener());
@@ -48,14 +51,14 @@ public class GameField extends JPanel implements ActionListener {
             y[i] = 48;
         }
 
-        timer = new Timer(250, this); // Частота 250 мс
+        timer = new Timer(125, this); // Период [мс]
         timer.start();
         createApple();
     }
 
     public void createApple() {
-        appleX = new Random().nextInt(20) * DOT_SIZE;
-        appleY = new Random().nextInt(20) * DOT_SIZE;
+        appleX = new Random().nextInt(GRID_SIZE) * DOT_SIZE;
+        appleY = new Random().nextInt(GRID_SIZE) * DOT_SIZE;
     }
 
     // Загрузка изображений
@@ -79,7 +82,7 @@ public class GameField extends JPanel implements ActionListener {
             //Font f = new Font("Arial", 14, Font.BOLD);
             g.setColor(Color.white);
             //g.setFont(f);
-            g.drawString(str, 125, SIZE / 2);
+            g.drawString(str, 125, FIELD_SIZE / 2);
         }
     }
 
@@ -116,7 +119,7 @@ public class GameField extends JPanel implements ActionListener {
             }
         }
 
-        if (x[0] > SIZE || y[0] > SIZE || x[0] < 0 || y[0] < 0) {
+        if (x[0] >= FIELD_SIZE || y[0] >= FIELD_SIZE || x[0] < 0 || y[0] < 0) {
             inGame = false;
         }
     }

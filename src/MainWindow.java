@@ -5,12 +5,14 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         setTitle("Snake");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setBounds(400, 400, 320, 345);
         add(new GameField());
+        pack();
+        setLocationRelativeTo(null);
+        setResizable(false);
         setVisible(true);
     }
 
-    static void main() {
+    public static void main(String[] args) {
         MainWindow mw = new MainWindow();
     }
 }
