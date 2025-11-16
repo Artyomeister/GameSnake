@@ -32,6 +32,8 @@ public class GameField extends JPanel implements ActionListener {
     private boolean paused = false;
     // Змейка в игре
     private boolean inGame = true;
+    // Счёт
+    private int score = 0;
 
     // Конструктор по умолчанию
     public GameField() {
@@ -46,6 +48,7 @@ public class GameField extends JPanel implements ActionListener {
     // Создание игры
     public void initGame() {
         dots = 3; // Начальный размер змейки
+        score = 0;
 
         // Начальная позиция змейки
         for (int i = 0; i < dots; i++) {
@@ -75,6 +78,11 @@ public class GameField extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (inGame) {
+            // Отображение счёта
+            g.setColor(Color.white);
+            g.drawString("Score: " + score, 10, 15);
+
+            // Отрисовка яблока и змейки
             g.drawImage(apple, appleX, appleY, this);
             for (int i = 0; i < dots; i++) {
                 g.drawImage(dot, x[i], y[i], this);
@@ -84,9 +92,11 @@ public class GameField extends JPanel implements ActionListener {
                 g.drawString("PAUSED", FIELD_SIZE / 2 - 30, FIELD_SIZE / 2);
             }
         } else {
-            String str = "Game Over";
+            String gameOverStr = "Game Over";
+            String finalScoreStr = "Final Score: " + score;
             g.setColor(Color.white);
-            g.drawString(str, 125, FIELD_SIZE / 2);
+            g.drawString(gameOverStr, FIELD_SIZE / 2 - 40, FIELD_SIZE / 2 - 10);
+            g.drawString(finalScoreStr, FIELD_SIZE / 2 - 50, FIELD_SIZE / 2 + 10);
         }
     }
 
@@ -95,23 +105,16 @@ public class GameField extends JPanel implements ActionListener {
             x[i] = x[i - 1];
             y[i] = y[i - 1];
         }
-        if (left) {
-            x[0] -= DOT_SIZE;
-        }
-        if (right) {
-            x[0] += DOT_SIZE;
-        }
-        if (up) {
-            y[0] -= DOT_SIZE;
-        }
-        if (down) {
-            y[0] += DOT_SIZE;
-        }
+        if (left) x[0] -= DOT_SIZE;
+        if (right) x[0] += DOT_SIZE;
+        if (up) y[0] -= DOT_SIZE;
+        if (down) y[0] += DOT_SIZE;
     }
 
     public void checkApple() {
         if (x[0] == appleX && y[0] == appleY) {
             dots++;
+            score += 10;
             createApple();
         }
     }
