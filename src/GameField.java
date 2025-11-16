@@ -28,6 +28,8 @@ public class GameField extends JPanel implements ActionListener {
     private boolean right = true;
     private boolean up = false;
     private boolean down = false;
+    // Пауза
+    private boolean paused = false;
     // Змейка в игре
     private boolean inGame = true;
 
@@ -77,11 +79,13 @@ public class GameField extends JPanel implements ActionListener {
             for (int i = 0; i < dots; i++) {
                 g.drawImage(dot, x[i], y[i], this);
             }
+            if (paused) {
+                g.setColor(Color.white);
+                g.drawString("PAUSED", FIELD_SIZE / 2 - 30, FIELD_SIZE / 2);
+            }
         } else {
             String str = "Game Over";
-            //Font f = new Font("Arial", 14, Font.BOLD);
             g.setColor(Color.white);
-            //g.setFont(f);
             g.drawString(str, 125, FIELD_SIZE / 2);
         }
     }
@@ -126,7 +130,7 @@ public class GameField extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (inGame) {
+        if (inGame && !paused) {
             checkApple();
             checkCollisions();
             move();
@@ -139,6 +143,9 @@ public class GameField extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             super.keyPressed(e);
             int key = e.getKeyCode();
+            if (key == KeyEvent.VK_ESCAPE || key == KeyEvent.VK_SPACE) {
+                paused = !paused;
+            }
             if (key == KeyEvent.VK_LEFT && !right) {
                 left = true;
                 up = false;
