@@ -77,6 +77,10 @@ public class GameField extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // Отрисовка сетки
+        drawGrid(g);
+
         if (inGame) {
             // Отображение счёта
             g.setColor(Color.white);
@@ -97,6 +101,28 @@ public class GameField extends JPanel implements ActionListener {
             g.setColor(Color.white);
             g.drawString(gameOverStr, FIELD_SIZE / 2 - 40, FIELD_SIZE / 2 - 10);
             g.drawString(finalScoreStr, FIELD_SIZE / 2 - 50, FIELD_SIZE / 2 + 10);
+        }
+    }
+
+    private void drawGrid(Graphics g) {
+        // Шахматный паттерн для фона
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                if ((i + j) % 2 == 0) {
+                    g.setColor(new Color(20, 20, 20)); // Тёмные клетки
+                } else {
+                    g.setColor(new Color(25, 25, 25)); // Светлые клетки
+                }
+                g.fillRect(i * DOT_SIZE, j * DOT_SIZE, DOT_SIZE, DOT_SIZE);
+            }
+        }
+
+        // Контуры клеток тонкие линии
+        g.setColor(new Color(40, 40, 40));
+        for (int i = 0; i <= GRID_SIZE; i++) {
+            int pos = i * DOT_SIZE;
+            g.drawLine(pos, 0, pos, FIELD_SIZE); // Вертикальные линии
+            g.drawLine(0, pos, FIELD_SIZE, pos); // Горизонтальные линии
         }
     }
 
