@@ -56,14 +56,37 @@ public class GameField extends JPanel implements ActionListener {
             y[i] = 48;
         }
 
-        timer = new Timer(125, this); // Период [мс]
+        timer = new Timer(100, this); // Период [мс]
         timer.start();
         createApple();
     }
 
     public void createApple() {
-        appleX = new Random().nextInt(GRID_SIZE) * DOT_SIZE;
-        appleY = new Random().nextInt(GRID_SIZE) * DOT_SIZE;
+        boolean onSnake;
+        Random random = new Random();
+        int attempts = 0;
+        final int MAX_ATTEMPTS = 100; // Защита от бесконечного цикла
+
+        do {
+            onSnake = false;
+            appleX = random.nextInt(GRID_SIZE) * DOT_SIZE;
+            appleY = random.nextInt(GRID_SIZE) * DOT_SIZE;
+
+            // Проверяем, не попадает ли яблоко на змейку
+            for (int i = 0; i < dots; i++) {
+                if (appleX == x[i] && appleY == y[i]) {
+                    onSnake = true;
+                    break;
+                }
+            }
+
+            attempts++;
+            if (attempts >= MAX_ATTEMPTS) {
+                break; // Защита от бесконечного цикла
+            }
+        } while (onSnake);
+
+
     }
 
     // Загрузка изображений
