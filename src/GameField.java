@@ -82,10 +82,6 @@ public class GameField extends JPanel implements ActionListener {
         drawGrid(g);
 
         if (inGame) {
-            // Отображение счёта
-            g.setColor(Color.white);
-            g.drawString("Score: " + score, 10, 15);
-
             // Отрисовка яблока и змейки
             g.drawImage(apple, appleX, appleY, this);
             for (int i = 0; i < dots; i++) {
@@ -155,6 +151,16 @@ public class GameField extends JPanel implements ActionListener {
         if (x[0] >= FIELD_SIZE || y[0] >= FIELD_SIZE || x[0] < 0 || y[0] < 0) {
             inGame = false;
         }
+    }
+
+    // Геттер для счета
+    public int getScore() {
+        return score;
+    }
+
+    // Геттер для состояния игры
+    public boolean isInGame() {
+        return inGame;
     }
 
     @Override
